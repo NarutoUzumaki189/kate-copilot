@@ -1,0 +1,11 @@
+{
+  "KPlugin": {
+    "Id": "katecopilot",
+    "Name": "Copilot Plugin",
+    "Description": "Copilot-style AI assistant for the Kate editor.",
+    "Version": "0.1",
+    "Author": "Sivakishore Padavala",
+    "License": "MIT"
+  },
+  "X-KTextEditor-Plugin": true
+}
