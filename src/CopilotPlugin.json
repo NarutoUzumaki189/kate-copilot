@@ -1,0 +1,16 @@
+{
+    "KPlugin": {
+        "Id": "copilot",
+        "Name": "Copilot",
+        "Description": "AI Copilot for Kate",
+        "Version": "0.1",
+        "Authors": [
+            {
+                "Name": "Sivakishore Padavala",
+                "Email": "siva2thrones@gmail.com"
+            }
+        ],
+        "Category": "TextEditor",
+        "License": "GPL-3.0-or-later"
+    }
+}
