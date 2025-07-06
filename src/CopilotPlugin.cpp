@@ -1,40 +1,38 @@
-#include "CopilotPlugin.h"
+/*
+    SPDX-FileCopyrightText: 2025 Sivakishore Padavala <siva2thrones@gmgail.com>
 
-#include <KTextEditor/View>
-#include <KTextEditor/Document>
-#include <KTextEditor/MainWindow>
+    SPDX-License-Identifier: GPL-3.0-or-later
+*/
+#include "CopilotPlugin.h"
+#include "CopilotView.h"
+
 #include <KLocalizedString>
 #include <KPluginFactory>
+#include <KTextEditor/MainWindow>
+#include <KActionCollection>
 #include <QAction>
-#include <QMessageBox>
 
-K_PLUGIN_FACTORY_WITH_JSON(CopilotPluginFactory, "metadata.json", registerPlugin<CopilotPlugin>();)
+K_PLUGIN_FACTORY_WITH_JSON(CopilotPluginFactory, "CopilotPlugin.json", registerPlugin<CopilotPlugin>();)
 
-CopilotPlugin::CopilotPlugin(QObject* parent, const QVariantList& args)
-: KTextEditor::Plugin(parent)
+CopilotPlugin::CopilotPlugin(QObject *parent, const QList<QVariant> &)
+    : KTextEditor::Plugin(parent)
 {
-    Q_UNUSED(args)
 }
 
-QObject* CopilotPlugin::createView(KTextEditor::MainWindow* mainWindow)
+CopilotPlugin::~CopilotPlugin() = default;
+
+QObject *CopilotPlugin::createView(KTextEditor::MainWindow *mainWindow)
 {
-    auto* action = new QAction(i18n("Copilot Suggest"), mainWindow);
-    action->setToolTip(i18n("Send current document to AI for suggestions"));
-    action->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    auto *view = new CopilotView(this, mainWindow);
 
-    mainWindow->actionCollection()->addAction(QStringLiteral("copilot_suggest"), action);
+    QAction *action = new QAction(i18n("Suggest with Copilot"), view);
 
-    connect(action, &QAction::triggered, mainWindow, [mainWindow]() {
-        auto* view = mainWindow->activeView();
-        if (!view) return;
+    // Register the action on the CopilotView's own actionCollection
+    view->actionCollection()->addAction(QStringLiteral("copilot_suggest"), action);
 
-        QString content = view->document()->text();
-        QMessageBox::information(nullptr, "Copilot", "Pretending to send:\n" + content.left(100));
+    connect(action, &QAction::triggered, view, &CopilotView::suggest);
 
-        // TODO: Call AI API and insert result
-    });
-
-    return nullptr;
+    return view;
 }
 
 #include "CopilotPlugin.moc"

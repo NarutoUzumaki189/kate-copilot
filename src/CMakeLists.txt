@@ -14,6 +14,7 @@ find_package(KF5 REQUIRED COMPONENTS TextEditor I18n)
 
 add_library(katecopilot MODULE
     src/CopilotPlugin.cpp
+    src/CopilotView.cpp
 )
 
 target_link_libraries(katecopilot
